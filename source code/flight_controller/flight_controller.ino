@@ -53,18 +53,54 @@ void setup() {
   ESC_3.attach(6,1000,2000);
   ESC_4.attach(9,1000,2000);
 
+  //blink
+  for(int i=0; i<3; i++){
+    digitalWrite(led_1_pin,HIGH);
+    digitalWrite(led_2_pin,HIGH);
+    digitalWrite(led_3_pin,HIGH);
+    digitalWrite(led_4_pin,HIGH);
+
+    delay(500);
+
+    digitalWrite(led_1_pin,LOW);
+    digitalWrite(led_2_pin,LOW);
+    digitalWrite(led_3_pin,LOW);
+    digitalWrite(led_4_pin,LOW);
+
+    delay(500);
+  };
+
   //calibration
-  ESC_1.write(180);
-  ESC_2.write(180);
-  ESC_3.write(180);
-  ESC_4.write(180);
+  ESC_1.writeMicroseconds(2000);
+  ESC_2.writeMicroseconds(2000);
+  ESC_3.writeMicroseconds(2000);
+  ESC_4.writeMicroseconds(2000);
+
+  delay(2000);
+
+  ESC_1.writeMicroseconds(1000);
+  ESC_2.writeMicroseconds(1000);
+  ESC_3.writeMicroseconds(1000);
+  ESC_4.writeMicroseconds(1000);
 
   delay(3000);
 
-  ESC_1.write(0);
-  ESC_2.write(0);
-  ESC_3.write(0);
-  ESC_4.write(0);
+  //blink
+  for(int i=0; i<3; i++){
+    digitalWrite(led_1_pin,HIGH);
+    digitalWrite(led_2_pin,HIGH);
+    digitalWrite(led_3_pin,HIGH);
+    digitalWrite(led_4_pin,HIGH);
+
+    delay(200);
+
+    digitalWrite(led_1_pin,LOW);
+    digitalWrite(led_2_pin,LOW);
+    digitalWrite(led_3_pin,LOW);
+    digitalWrite(led_4_pin,LOW);
+
+    delay(200);
+  };
 }
 
 void loop() {
@@ -75,7 +111,7 @@ void loop() {
     int x = data.joystick.x;
     int y = data.joystick.y;
     int btn = data.joystick.btn;
-    int throttle = data.throttle;
+    int throttle = map(data.throttle,0,180,1000,2000);
     int rotation = data.rotation;
     int light = data.light;
 
@@ -102,50 +138,50 @@ void loop() {
     Serial.print("\n\n\n");
 
     
-    ESC_1.write(throttle);
-    ESC_2.write(throttle);
-    ESC_3.write(throttle);
-    ESC_4.write(throttle);
+    ESC_1.writeMicroseconds(throttle);
+    ESC_2.writeMicroseconds(throttle);
+    ESC_3.writeMicroseconds(throttle);
+    ESC_4.writeMicroseconds(throttle);
     
     //PITCH
     if(y < 10){
-      ESC_1.write(throttle - 30);
-      ESC_2.write(throttle - 30);
+      ESC_1.writeMicroseconds(throttle - 30);
+      ESC_2.writeMicroseconds(throttle - 30);
     }
 
     if(y > 1000){
-      ESC_3.write(throttle - 30);
-      ESC_4.write(throttle - 30);
+      ESC_3.writeMicroseconds(throttle - 30);
+      ESC_4.writeMicroseconds(throttle - 30);
     }
 
     //ROLL
     if(x < 10){
-      ESC_1.write(throttle - 30);
-      ESC_4.write(throttle - 30);
+      ESC_1.writeMicroseconds(throttle - 30);
+      ESC_4.writeMicroseconds(throttle - 30);
     }
 
     if(x > 1000){
-      ESC_2.write(throttle - 30);
-      ESC_3.write(throttle - 30);
+      ESC_2.writeMicroseconds(throttle - 30);
+      ESC_3.writeMicroseconds(throttle - 30);
     }
 
     //YAW
     if(rotation > 30) {
-      ESC_1.write(throttle - 30);
-      ESC_3.write(throttle - 30);
+      ESC_1.writeMicroseconds(throttle - 30);
+      ESC_3.writeMicroseconds(throttle - 30);
     }//left
 
     if(rotation < -20) {
-      ESC_2.write(throttle - 30);
-      ESC_4.write(throttle - 30);
+      ESC_2.writeMicroseconds(throttle - 30);
+      ESC_4.writeMicroseconds(throttle - 30);
     }//right
 
     //disengage
     if (btn == 0) {
-      ESC_1.write(0);
-      ESC_2.write(0);
-      ESC_3.write(0);
-      ESC_4.write(0);
+      ESC_1.writeMicroseconds(1000);
+      ESC_2.writeMicroseconds(1000);
+      ESC_3.writeMicroseconds(1000);
+      ESC_4.writeMicroseconds(1000);
 
       for(;;){
         digitalWrite(led_1_pin,HIGH);
